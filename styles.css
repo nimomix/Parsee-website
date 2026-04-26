@@ -362,3 +362,59 @@ code {
   border-radius: 9px;
   opacity: 0.7;
 }
+
+/* ──────────── Page header (privacy etc.) ──────────── */
+.page-header {
+  padding: var(--space-6) 0 var(--space-4);
+  text-align: center;
+}
+.back-link {
+  display: inline-block;
+  font-size: var(--fs-secondary);
+  color: var(--text-muted);
+  margin-bottom: var(--space-4);
+}
+.back-link:hover { color: var(--accent); }
+.page-mark {
+  width: 48px;
+  height: 48px;
+  border-radius: 11px;
+  margin: 0 auto var(--space-3);
+}
+.page-title {
+  font-size: var(--fs-section);
+  line-height: var(--lh-display);
+  letter-spacing: var(--ls-display);
+  font-weight: 700;
+}
+.page-meta {
+  margin-top: var(--space-1);
+  font-size: var(--fs-secondary);
+}
+
+/* ──────────── Long-form legal text ──────────── */
+.legal {
+  padding: var(--space-5) 0 var(--space-7);
+  line-height: var(--lh-prose);
+  font-size: var(--fs-body);
+}
+.legal h2 {
+  margin-top: var(--space-6);
+  margin-bottom: var(--space-2);
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.legal h3 {
+  margin-top: var(--space-4);
+  margin-bottom: var(--space-1);
+  font-size: 19px;
+  font-weight: 600;
+}
+.legal p { margin-top: var(--space-2); }
+.legal ul {
+  margin-top: var(--space-2);
+  padding-left: 1.4em;
+}
+.legal li { margin-top: 6px; }
+.legal a { color: var(--accent); }
