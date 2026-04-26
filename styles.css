@@ -222,3 +222,53 @@ section + section { border-top: 1px solid var(--divider); }
   }
   .fade-in { opacity: 1; transform: none; }
 }
+
+/* ──────────── Hero ──────────── */
+.hero {
+  padding: var(--space-7) 0 var(--space-6);
+  text-align: center;
+}
+@media (min-width: 1024px) {
+  .hero { padding: var(--space-8) 0 var(--space-7); }
+}
+.hero-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.hero-icon {
+  width: 96px;
+  height: 96px;
+  border-radius: 22px;  /* macOS app-icon corner radius for 96px ~ 22px */
+  margin-bottom: var(--space-3);
+}
+.hero-wordmark {
+  font-size: var(--fs-hero);
+  line-height: var(--lh-display);
+  letter-spacing: var(--ls-display);
+  font-weight: 700;
+  margin-bottom: var(--space-2);
+}
+.hero-tagline {
+  font-size: clamp(20px, 2.4vw, 26px);
+  color: var(--text-muted);
+  font-weight: 400;
+  margin-bottom: var(--space-5);
+}
+.appstore-link {
+  display: inline-block;
+  transition: transform 200ms var(--ease);
+}
+.appstore-link:hover { transform: translateY(-1px); text-decoration: none; }
+.appstore-link img { height: 48px; width: auto; }
+.hero-trial {
+  margin-top: var(--space-2);
+  font-size: var(--fs-secondary);
+}
+.hero-screenshot {
+  margin-top: var(--space-6);
+  width: 100%;
+}
+@media (min-width: 1024px) {
+  .hero-screenshot { margin-top: var(--space-7); }
+}

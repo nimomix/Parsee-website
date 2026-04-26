@@ -1,18 +1,46 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Parsee — CSS check</title>
-<link rel="stylesheet" href="styles.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0a0a0c" media="(prefers-color-scheme: dark)">
+
+  <title>Parsee — The JSON viewer for macOS</title>
+  <meta name="description" content="Parse. See. Understand. A native macOS JSON viewer with smart filters, persistent search, AI insights, JSON diff, and Xcode LLDB integration.">
+
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="images/favicon-180.png">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Parsee — The JSON viewer for macOS">
+  <meta property="og:description" content="Parse. See. Understand. A native macOS JSON viewer with smart filters, persistent search, AI insights, JSON diff, and Xcode LLDB integration.">
+  <meta property="og:image" content="https://nimomix.github.io/parsee/images/hero.png">
+
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="container" style="padding-top:64px;">
-    <h1 class="display">Display heading</h1>
-    <h2 class="section-title">Section title</h2>
-    <p class="section-subtitle">Section subtitle</p>
-    <p>Body copy in <a href="#">accent</a> link.</p>
-    <p class="muted">Muted secondary text.</p>
-  </div>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="container hero-inner">
+      <img class="hero-icon" src="images/parsee-icon.png" alt="" width="96" height="96">
+      <h1 class="hero-wordmark">Parsee</h1>
+      <p class="hero-tagline">Parse. See. Understand.</p>
+      <a class="appstore-link" href="https://apps.apple.com/us/app/parsee-json-viewer/id6756983590">
+        <img src="images/app-store-badge.svg" alt="Download on the Mac App Store" height="48">
+      </a>
+      <p class="hero-trial muted">Free 30-day trial</p>
+      <div class="hero-screenshot screenshot-wrap fade-in">
+        <img class="screenshot" src="images/hero.png" alt="Parsee showing a JSON tree view of coffee shop data">
+      </div>
+    </div>
+  </header>
+
+  <!-- ACTS go here in subsequent tasks -->
+
+  <script src="app.js" defer></script>
 </body>
 </html>
