@@ -314,3 +314,51 @@ code {
     margin-top: var(--space-3);
   }
 }
+
+/* ──────────── About ──────────── */
+.about {
+  padding: var(--space-7) 0;
+}
+.about-text {
+  font-size: clamp(20px, 2.2vw, 24px);
+  line-height: 1.5;
+  text-align: center;
+  color: var(--text);
+}
+
+/* ──────────── Footer ──────────── */
+.footer {
+  padding: var(--space-7) 0 var(--space-6);
+  border-top: 1px solid var(--divider);
+}
+.footer-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.footer-trial {
+  margin-top: var(--space-2);
+  font-size: var(--fs-secondary);
+}
+.footer-links {
+  margin-top: var(--space-5);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  font-size: var(--fs-secondary);
+}
+.footer-links a {
+  color: var(--text-muted);
+}
+.footer-links a:hover { color: var(--accent); }
+.footer-links .dot { color: var(--text-muted); opacity: 0.5; }
+.footer-mark {
+  margin-top: var(--space-5);
+  width: 40px;
+  height: 40px;
+  border-radius: 9px;
+  opacity: 0.7;
+}
