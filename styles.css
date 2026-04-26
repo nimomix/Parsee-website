@@ -1,0 +1,224 @@
+/* Parsee marketing site — vanilla CSS, no build step.
+   Light by default, auto dark via prefers-color-scheme. */
+
+:root {
+  /* Color tokens — light */
+  --bg: #ffffff;
+  --bg-alt: #fafafa;
+  --text: #1d1d1f;
+  --text-muted: #86868b;
+  --accent: #007AFF;
+  --divider: rgba(0, 0, 0, 0.06);
+  --shadow-screenshot: 0 24px 64px -16px rgba(0, 0, 0, 0.18),
+                       0 8px 24px -8px rgba(0, 0, 0, 0.10);
+
+  /* Spacing scale (8px base) */
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 48px;
+  --space-6: 64px;
+  --space-7: 96px;
+  --space-8: 128px;
+  --space-9: 192px;
+
+  /* Layout */
+  --content-max: 1200px;
+  --prose-max: 720px;
+  --side-pad: 24px;
+
+  /* Type scale */
+  --fs-hero: clamp(40px, 7vw, 64px);
+  --fs-section: clamp(32px, 5vw, 48px);
+  --fs-sub: clamp(24px, 3vw, 28px);
+  --fs-body: 17px;
+  --fs-secondary: 15px;
+  --fs-micro: 13px;
+
+  --lh-display: 1.08;
+  --lh-body: 1.5;
+  --lh-prose: 1.65;
+
+  --ls-display: -0.022em;
+
+  /* Motion */
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --duration-fade: 600ms;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0a0a0c;
+    --bg-alt: #111114;
+    --text: #f5f5f7;
+    --text-muted: #86868b;
+    --accent: #0A84FF;
+    --divider: rgba(255, 255, 255, 0.06);
+    --shadow-screenshot: 0 24px 64px -16px rgba(0, 0, 0, 0.6),
+                         0 8px 24px -8px rgba(0, 0, 0, 0.4);
+  }
+}
+
+@media (min-width: 768px) {
+  :root { --side-pad: 48px; }
+}
+
+@media (min-width: 1024px) {
+  :root { --side-pad: 80px; }
+}
+
+/* Self-hosted Inter — only loaded by non-Apple platforms via the
+   font-stack fallback chain. Mac users get SF Pro Display from the system. */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('images/fonts/Inter-Regular.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('images/fonts/Inter-Medium.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('images/fonts/Inter-SemiBold.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('images/fonts/Inter-Bold.woff2') format('woff2');
+}
+
+/* Reset */
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+               "Inter", system-ui, sans-serif;
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+img, picture, svg { display: block; max-width: 100%; height: auto; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Display headings */
+.display {
+  font-size: var(--fs-hero);
+  line-height: var(--lh-display);
+  letter-spacing: var(--ls-display);
+  font-weight: 700;
+}
+.section-title {
+  font-size: var(--fs-section);
+  line-height: var(--lh-display);
+  letter-spacing: var(--ls-display);
+  font-weight: 700;
+  text-align: center;
+}
+.section-subtitle {
+  font-size: clamp(18px, 2vw, 22px);
+  color: var(--text-muted);
+  text-align: center;
+  margin-top: var(--space-2);
+  font-weight: 400;
+}
+.sub-title {
+  font-size: var(--fs-sub);
+  line-height: 1.2;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.muted { color: var(--text-muted); }
+
+/* Containers */
+.container {
+  width: 100%;
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: 0 var(--side-pad);
+}
+.prose {
+  width: 100%;
+  max-width: var(--prose-max);
+  margin: 0 auto;
+  padding: 0 var(--side-pad);
+}
+
+/* Sections */
+section {
+  padding: var(--space-7) 0;
+}
+@media (min-width: 1024px) {
+  section { padding: var(--space-8) 0; }
+}
+section.tinted {
+  background: var(--bg-alt);
+}
+section + section { border-top: 1px solid var(--divider); }
+
+/* Screenshot frame */
+.screenshot {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: var(--shadow-screenshot);
+}
+.screenshot-wrap {
+  margin-top: var(--space-5);
+}
+
+/* Sub-section block */
+.subsection {
+  margin-top: var(--space-7);
+}
+.subsection:first-of-type { margin-top: var(--space-6); }
+.subsection-copy {
+  max-width: var(--prose-max);
+  margin: var(--space-4) auto 0;
+  text-align: center;
+  color: var(--text);
+}
+.subsection-copy .capabilities {
+  margin-top: var(--space-2);
+  color: var(--text-muted);
+  font-size: var(--fs-secondary);
+}
+
+/* Scroll-fade entrance — set by app.js */
+.fade-in {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity var(--duration-fade) var(--ease),
+              transform var(--duration-fade) var(--ease);
+}
+.fade-in.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .fade-in { opacity: 1; transform: none; }
+}
