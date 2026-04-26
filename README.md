@@ -2,7 +2,7 @@
 
 Public website for [Parsee](https://apps.apple.com/us/app/parsee-json-viewer/id6756983590), a JSON viewer for macOS.
 
-Hosted via GitHub Pages at <https://nimomix.github.io/parsee>.
+Hosted via GitHub Pages at <https://nimomix.github.io/Parsee-website>.
 
 ## Layout
 

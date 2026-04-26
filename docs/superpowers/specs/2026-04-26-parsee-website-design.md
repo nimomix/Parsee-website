@@ -8,13 +8,13 @@
 
 ## 1. Overview
 
-A public marketing website for **Parsee**, a macOS JSON viewer distributed exclusively through the Mac App Store. The site lives at `nimomix.github.io/parsee` and serves three purposes:
+A public marketing website for **Parsee**, a macOS JSON viewer distributed exclusively through the Mac App Store. The site lives at `nimomix.github.io/Parsee-website` and serves three purposes:
 
 1. Convert visitors into Mac App Store downloads
 2. Showcase Parsee's depth across nine features
 3. Host the privacy policy as a permanent URL
 
-The existing repo (`Parsee-website`) contains never-pushed prior drafts; we start fresh and use them only as reference. Renamed to lowercase `parsee` for the public URL.
+The existing repo (`Parsee-website`) contains never-pushed prior drafts; we start fresh and use them only as reference. Originally planned to rename to lowercase `parsee` but the name `Parsee` was already taken on the account by the app repo, and any case variant collides on GitHub's case-insensitive namespace, so we kept `Parsee-website` as the repo name.
 
 ## 2. Architecture & deployment
 
@@ -28,8 +28,8 @@ The existing repo (`Parsee-website`) contains never-pushed prior drafts; we star
 - Push to `main` and the site is live
 
 **Repo & URL:**
-- Rename remote from `Parsee-website` to `parsee` (lowercase)
-- Final URL: `nimomix.github.io/parsee`
+- Repo name stays as `Parsee-website` (rename to lowercase `parsee` was considered but blocked by a name collision with the app repo)
+- Final URL: `nimomix.github.io/Parsee-website`
 - No custom domain (decision deferred indefinitely)
 
 **Deployment:** GitHub Pages from `main` branch, root directory. No GitHub Actions.
@@ -39,7 +39,7 @@ The existing repo (`Parsee-website`) contains never-pushed prior drafts; we star
 **File structure:**
 
 ```
-parsee/                         (renamed from Parsee-website)
+Parsee-website/                  (kept as-is; rename collided with app repo)
 ├── index.html
 ├── privacy.html
 ├── styles.css
@@ -276,10 +276,10 @@ These are intentionally not pinned in this spec; the implementation plan should 
 
 1. **App Store URL** — confirmed: `https://apps.apple.com/us/app/parsee-json-viewer/id6756983590`. Treat as a single-source variable in the HTML.
 2. **Icon variant** — confirm `parsee_square_corners.jpg` renders well at 96px. If not, request a higher-resolution rounded export from the user.
-3. **Accent color exact value** — sample from the Parsee app source at `/Users/nbar/Projects/Parsee/` (asset catalog or theme files) during implementation. Likely a blue tuned to the app icon; pick the canonical "Parsee blue" already defined in code rather than eyeballing from screenshots.
+3. **Accent color exact value** — sample from the Parsee app source at `~/Projects/Parsee/` (asset catalog or theme files) during implementation. Likely a blue tuned to the app icon; pick the canonical "Parsee blue" already defined in code rather than eyeballing from screenshots.
 4. **Inter font hosting** — self-host versus CDN. Default to self-host.
 5. **Gist content reconciliation for privacy page** — fetch current gist content and merge with Aptabase disclosure.
-6. **Repo rename** — Nimrod renames `Parsee-website` → `parsee` on GitHub (Settings → Rename) before the first GitHub Pages deploy. The implementer then runs `git remote set-url origin <new url>` locally to point at the renamed remote, and confirms the GitHub Pages settings (Source: Deploy from branch → main → /).
+6. **Repo name** — Repo stays as `Parsee-website` (rename to lowercase `parsee` was considered during planning but blocked by a name collision with the existing private app repo `nimomix/Parsee` on the same account; GitHub repo names are case-insensitive within an account). The implementer confirms the local remote URL still resolves and that the repo is set to Public on GitHub (required for free-tier GitHub Pages), then configures Pages (Source: Deploy from branch → main → /).
 7. **Favicon** — derive from the app icon during implementation.
 8. **README** — single short paragraph explaining the repo's purpose.
 
@@ -302,7 +302,7 @@ If any of these become priorities later they get their own spec — they don't s
 
 The site is "done" when:
 
-1. `nimomix.github.io/parsee` resolves to the new site (with the renamed repo).
+1. `nimomix.github.io/Parsee-website` resolves to the new site.
 2. All 9 features (across the three acts) are present with their associated screenshots.
 3. The hero CTA, footer CTA, and any other App Store buttons all link to the same App Store URL (single source).
 4. The privacy page accurately discloses both TelemetryDeck and Aptabase.

@@ -8,9 +8,9 @@
 
 **Tech Stack:** HTML5, CSS3 (custom properties), vanilla ES2020 JS, Inter (self-hosted woff2). No Node, no build tools.
 
-**Working repo:** `/Users/nbar/Projects/parsee-website/`
+**Working repo:** `~/Projects/parsee-website/`
 **Spec:** `docs/superpowers/specs/2026-04-26-parsee-website-design.md`
-**App source (for color/icon sampling):** `/Users/nbar/Projects/Parsee/`
+**App source (for color/icon sampling):** `~/Projects/Parsee/`
 
 ---
 
@@ -74,7 +74,7 @@ Get the repo to a known clean state, archive prior drafts (don't delete — they
 - [ ] **Step 1: Confirm current state**
 
 ```bash
-cd /Users/nbar/Projects/parsee-website
+cd ~/Projects/parsee-website
 git status
 ls -la
 ```
@@ -143,7 +143,7 @@ EOF
 Use the higher-quality icon from the Parsee app source rather than the `_square_corners.jpg` placeholder.
 
 **Files:**
-- Source: `/Users/nbar/Projects/Parsee/Parsee/Parsee/ParseeCube.icon/Assets/Cube!.png`
+- Source: `~/Projects/Parsee/Parsee/Parsee/ParseeCube.icon/Assets/Cube!.png`
 - Create: `images/parsee-icon.png` (copy of source)
 - Create: `images/favicon-32.png`, `images/favicon-180.png` (resized variants)
 - Create: `favicon.ico` (legacy fallback)
@@ -151,7 +151,7 @@ Use the higher-quality icon from the Parsee app source rather than the `_square_
 - [ ] **Step 1: Copy the icon source**
 
 ```bash
-cp "/Users/nbar/Projects/Parsee/Parsee/Parsee/ParseeCube.icon/Assets/Cube!.png" images/parsee-icon.png
+cp "~/Projects/Parsee/Parsee/Parsee/ParseeCube.icon/Assets/Cube!.png" images/parsee-icon.png
 file images/parsee-icon.png
 ```
 
@@ -1331,7 +1331,7 @@ Read the content. Note the structure (intro, what's collected, third parties, co
 From the parent app source:
 
 ```bash
-grep -n "TelemetryDeck\|Aptabase" /Users/nbar/Projects/Parsee/Parsee/Parsee/AnalyticsService.swift | head -20
+grep -n "TelemetryDeck\|Aptabase" ~/Projects/Parsee/Parsee/Parsee/AnalyticsService.swift | head -20
 ```
 
 Expected: confirms both services are initialized and used. Take note of what events are tracked (the file lists them).
@@ -1784,7 +1784,7 @@ GitHub auto-redirects the old name to the new one for a while, but local remotes
 - [ ] **Step 2: Update local remote**
 
 ```bash
-cd /Users/nbar/Projects/parsee-website
+cd ~/Projects/parsee-website
 git remote -v
 git remote set-url origin git@github.com:nimomix/parsee.git
 git remote -v
