@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Parsee – JSON viewer with search & AI for macOS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Parsee is a fast, macOS-native JSON viewer with smart filters, quick find, AI insights, and Xcode LLDB integration." />
+
+  <!-- Open Graph / social sharing -->
+  <meta property="og:title" content="Parsee – JSON viewer with search & AI for macOS" />
+  <meta property="og:description" content="View, search, and understand large JSON files with filters, quick find, AI assist, and Xcode LLDB integration." />
+  <!-- Replace with your actual image URL when you have a nice screenshot -->
+  <meta property="og:image" content="https://parseejson.app/og-image.png" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://parseejson.app/" />
+
+  <style>
+  :root {
+    --bg0: #020617;
+    --bg1: #030a1d;
+    --surface: rgba(15, 23, 42, 0.68);
+    --surface-2: rgba(15, 23, 42, 0.45);
+    --surface-3: rgba(15, 23, 42, 0.32);
+
+    --text: #f8fafc;
+    --muted: rgba(226, 232, 240, 0.72);
+    --muted-2: rgba(226, 232, 240, 0.56);
+
+    --accent: #60a5fa;
+    --accent-2: #818cf8;
+    --accent-3: #22c55e;
+
+    --border: rgba(148, 163, 184, 0.22);
+    --border-strong: rgba(148, 163, 184, 0.34);
+
+    --radius-xl: 22px;
+    --radius-lg: 16px;
+    --radius-md: 12px;
+    --radius-sm: 10px;
+
+    --shadow-soft: 0 20px 60px rgba(0, 0, 0, 0.45);
+    --shadow-card: 0 18px 42px rgba(0, 0, 0, 0.38);
+
+    --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+      "San Francisco", "Helvetica Neue", Arial, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font-sans);
+    color: var(--text);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    background:
+      radial-gradient(1000px 700px at 14% 0%, rgba(96, 165, 250, 0.28), transparent 55%),
+      radial-gradient(900px 650px at 88% 14%, rgba(129, 140, 248, 0.20), transparent 58%),
+      radial-gradient(900px 700px at 50% 110%, rgba(34, 197, 94, 0.06), transparent 62%),
+      linear-gradient(180deg, var(--bg1) 0%, var(--bg0) 45%, var(--bg0) 100%);
+  }
+
+  a { color: inherit; }
+
+  .page { min-height: 100vh; display: flex; flex-direction: column; }
+
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+    background: rgba(2, 6, 23, 0.55);
+    backdrop-filter: blur(14px);
+  }
+
+  .nav {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 14px 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+  }
+
+  .nav-left { display: flex; align-items: center; gap: 12px; min-width: 0; }
+
+  .logo {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+    flex: 0 0 auto;
+  }
+  .logo img { width: 100%; height: 100%; display: block; }
+
+  .nav-title { font-weight: 640; letter-spacing: 0.01em; font-size: 15px; }
+  .nav-tagline { font-size: 12px; color: var(--muted-2); }
+
+  .nav-right a {
+    font-size: 13px;
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: rgba(15, 23, 42, 0.25);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: transform 120ms ease, border-color 120ms ease, background 120ms ease;
+    white-space: nowrap;
+  }
+  .nav-right a:hover {
+    border-color: rgba(96, 165, 250, 0.7);
+    background: rgba(96, 165, 250, 0.10);
+    transform: translateY(-1px);
+  }
+
+  main { flex: 1; }
+
+  /* Layout */
+  .section {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 72px 22px;
+  }
+
+  @media (max-width: 720px) {
+    .section { padding: 52px 18px; }
+  }
+
+  /* Hero */
+    .hero {
+    padding-top: 74px;
+    padding-bottom: 64px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 26px;
+    text-align: left;
+    align-items: center;
+  }
+
+  .hero-media {
+    display: none;
+  }
+
+  @media (min-width: 980px) {
+    .hero {
+      grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr);
+      text-align: left;
+    }
+    .hero-text { margin: 0; max-width: none; }
+    .hero-kicker { align-self: flex-start; justify-content: flex-start; }
+    .hero-subtitle { margin: 0; max-width: 560px; }
+    .pill-row { justify-content: flex-start; }
+    .hero-cta-row { justify-content: flex-start; }
+    .hero-media { display: block; }
+  }
+
+  @media (max-width: 979px) {
+    .hero { text-align: center; }
+    .hero-kicker { align-self: center; justify-content: center; }
+    .pill-row { justify-content: center; }
+    .hero-cta-row { justify-content: center; }
+  }
+
+  .hero-text {
+    max-width: 780px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .hero-kicker {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    align-self: center;
+    padding: 7px 12px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: rgba(15, 23, 42, 0.25);
+    color: var(--muted);
+    font-size: 12px;
+    letter-spacing: 0.02em;
+  }
+
+  h1 {
+    font-size: 38px;
+    line-height: 1.08;
+    letter-spacing: -0.035em;
+  }
+  @media (min-width: 900px) {
+    h1 { font-size: 52px; }
+  }
+
+  .hero-subtitle {
+    font-size: 16px;
+    color: var(--muted);
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  .pill-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 6px;
+  }
+  .pill {
+    font-size: 12px;
+    color: rgba(226, 232, 240, 0.8);
+    padding: 7px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(148, 163, 184, 0.22);
+    background: rgba(15, 23, 42, 0.22);
+  }
+
+  .hero-cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+  }
+
+  .button-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 11px 18px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    cursor: pointer;
+    background: linear-gradient(135deg, rgba(96, 165, 250, 1), rgba(129, 140, 248, 1));
+    color: #0b1020;
+    font-size: 14px;
+    font-weight: 650;
+    box-shadow: 0 18px 44px rgba(96, 165, 250, 0.28);
+    text-decoration: none;
+    transition: transform 120ms ease, filter 120ms ease;
+  }
+  .button-primary:hover { filter: brightness(1.04); transform: translateY(-1px); }
+
+  .button-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px 16px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: rgba(15, 23, 42, 0.35);
+    color: rgba(226, 232, 240, 0.82);
+    font-size: 13px;
+    text-decoration: none;
+    transition: transform 120ms ease, border-color 120ms ease, background 120ms ease;
+  }
+  .button-secondary:hover {
+    border-color: rgba(96, 165, 250, 0.65);
+    background: rgba(96, 165, 250, 0.08);
+    transform: translateY(-1px);
+  }
+
+  .hero-footnote {
+    margin-top: 6px;
+    font-size: 12px;
+    color: var(--muted-2);
+  }
+
+  /* Sections */
+  .section-title {
+    font-size: 22px;
+    letter-spacing: -0.015em;
+    margin-bottom: 8px;
+  }
+
+  .section-description {
+    font-size: 15px;
+    color: var(--muted);
+    max-width: 640px;
+    margin-bottom: 20px;
+  }
+
+  /* Screenshot section */
+  .section-screenshots { padding-top: 40px; }
+
+  .screenshots-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    gap: 26px;
+    align-items: center;
+  }
+  @media (max-width: 940px) {
+    .screenshots-grid { grid-template-columns: 1fr; }
+  }
+
+  .screenshot-card {
+    background: linear-gradient(to bottom right, rgba(15, 23, 42, 0.70), rgba(15, 23, 42, 0.38));
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--border);
+    padding: 14px;
+    box-shadow: var(--shadow-card);
+  }
+  .screenshot-card img {
+    width: 100%;
+    border-radius: 14px;
+    display: block;
+    border: 1px solid rgba(148, 163, 184, 0.18);
+  }
+  .screenshot-card figcaption {
+    margin-top: 10px;
+    font-size: 12px;
+    color: var(--muted-2);
+  }
+
+  /* Feature grid */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 18px;
+  }
+  @media (max-width: 980px) {
+    .features-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 720px) {
+    .features-grid { grid-template-columns: 1fr; }
+  }
+
+  .feature {
+    background: linear-gradient(to bottom right, rgba(15, 23, 42, 0.72), rgba(15, 23, 42, 0.40));
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(148, 163, 184, 0.22);
+    padding: 16px 16px 15px;
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.18);
+  }
+  .feature h3 { font-size: 14px; margin-bottom: 6px; letter-spacing: -0.01em; }
+  .feature p { font-size: 13px; color: var(--muted); }
+
+  /* Subtle bands */
+  .section-subtle {
+    background: radial-gradient(900px 600px at 20% 0%, rgba(96, 165, 250, 0.10), transparent 60%),
+      linear-gradient(180deg, rgba(2, 6, 23, 0.55), rgba(2, 6, 23, 0.85));
+    border-top: 1px solid rgba(148, 163, 184, 0.10);
+    border-bottom: 1px solid rgba(148, 163, 184, 0.10);
+  }
+
+  .section-subtle-inner {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 64px 22px;
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    gap: 26px;
+    align-items: start;
+  }
+  @media (max-width: 920px) {
+    .section-subtle-inner { grid-template-columns: 1fr; }
+  }
+
+  .section-subtle h2 {
+    font-size: 20px;
+    letter-spacing: -0.015em;
+    margin-bottom: 8px;
+  }
+  .section-subtle p {
+    font-size: 15px;
+    color: var(--muted);
+    max-width: 680px;
+  }
+
+  .list {
+    margin-top: 14px;
+    list-style: none;
+    padding-left: 0;
+  }
+  .list li {
+    font-size: 13px;
+    color: var(--muted);
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .list li::before {
+    content: "•";
+    color: rgba(96, 165, 250, 0.9);
+    margin-top: 1px;
+  }
+
+  .media-card {
+    background: linear-gradient(to bottom right, rgba(15, 23, 42, 0.70), rgba(15, 23, 42, 0.42));
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--border);
+    padding: 14px;
+    box-shadow: var(--shadow-card);
+  }
+
+  /* Footer */
+  footer {
+    border-top: 1px solid rgba(148, 163, 184, 0.10);
+    padding: 18px 20px 22px;
+    font-size: 12px;
+    color: var(--muted-2);
+    text-align: center;
+    background: rgba(2, 6, 23, 0.55);
+  }
+  footer a { color: rgba(226, 232, 240, 0.72); text-decoration: none; }
+  footer a:hover { color: rgba(248, 250, 252, 0.95); text-decoration: underline; }
+</style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div class="nav">
+        <div class="nav-left">
+          <div class="logo">
+            <img src="assets/parsee-icon.png" alt="Parsee app icon" />
+          </div>
+          <div>
+            <div class="nav-title">Parsee</div>
+            <div class="nav-tagline">JSON viewer & diff for macOS</div>
+          </div>
+        </div>
+        <div class="nav-right">
+          <a href="https://apps.apple.com/" target="_blank" rel="noopener noreferrer">
+            View on the Mac App Store
+            <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="section hero">
+  <div class="hero-text">
+    <div class="hero-kicker">macOS-native • Fast on huge JSON • Works local</div>
+    <h1>Understand big JSON in seconds.</h1>
+    <p class="hero-subtitle">
+      Parsee is a high-performance JSON viewer for macOS with path-aware filters, quick find,
+      side-by-side compare, and optional AI insights — all on top of local files.
+    </p>
+
+    <div class="pill-row" aria-label="Key highlights">
+      <span class="pill">Path-aware filter</span>
+      <span class="pill">Instant search</span>
+      <span class="pill">Meaningful diffs</span>
+      <span class="pill">LLDB + Xcode</span>
+    </div>
+
+    <div class="hero-cta-row">
+      <a class="button-primary" href="https://apps.apple.com/" target="_blank" rel="noopener noreferrer">
+        Download on the Mac App Store
+      </a>
+      <a class="button-secondary" href="#screenshots">
+        Explore features <span aria-hidden="true">↓</span>
+      </a>
+    </div>
+
+    <p class="hero-footnote">
+      Requires macOS 13 or later. Your JSON stays local on your Mac.
+    </p>
+  </div>
+
+  <figure class="screenshot-card hero-media" aria-label="Parsee main window screenshot">
+    <img src="assets/parsee-empty-screen.png" alt="Parsee main window on macOS" />
+    <figcaption>Clean, native UI — drag & drop a JSON file to start.</figcaption>
+  </figure>
+</section>
+
+<section id="screenshots" class="section section-screenshots">
+        <div class="screenshots-grid">
+          <div>
+            <h2 class="section-title">Smart filters and quick find for real‑world JSON</h2>
+            <p class="section-description">
+              Slice through big payloads with path‑aware filters and instant search.
+              Narrow down to exactly the keys and values you care about in a few keystrokes.
+            </p>
+            <div class="features-grid">
+              <article class="feature">
+                <h3>Smart filter</h3>
+                <p>Filter by keys, values, or JSON paths to keep only the relevant branches in view.</p>
+              </article>
+              <article class="feature">
+                <h3>Quick find</h3>
+                <p>Jump between matches instantly without losing your place in the tree.</p>
+              </article>
+            </div>
+          </div>
+
+          <figure class="screenshot-card">
+            <img src="assets/parsee-json-view.png" alt="Parsee JSON tree view with filters and search" />
+            <figcaption>Tree view designed for large, deeply nested JSON responses.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section id="features" class="section">
+        <h2 class="section-title">Built for developers who live in JSON</h2>
+        <div class="features-grid">
+      <article class="feature">
+        <h3>Easy navigation</h3>
+        <p>
+          Expand and collapse complex trees without lag, keep context with breadcrumbs,
+          and open multiple windows for different environments.
+        </p>
+      </article>
+
+      <article class="feature">
+        <h3>Light, dark, and personalized UI</h3>
+        <p>
+          Match your macOS theme with light and dark modes, and tune details like
+          font size and density so long JSON sessions stay comfortable.
+        </p>
+      </article>
+
+          <article class="feature">
+            <h3>Cross‑reference insights</h3>
+            <p>
+              See related keys and values side by side, so you can follow IDs, references,
+              and nested objects across your payload.
+            </p>
+          </article>
+
+          <article class="feature">
+            <h3>AI assist: ask questions about your JSON</h3>
+            <p>
+              Ask natural‑language questions like “What changed between these runs?” or
+              “Which users have failing payments?” and get answers grounded in your data.
+            </p>
+          </article>
+
+          <article class="feature">
+            <h3>AI compare</h3>
+            <p>
+              Compare two JSON payloads and let Parsee highlight meaningful differences,
+              not just structural diffs.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-subtle">
+        <div class="section-subtle-inner">
+          <div>
+            <h2>AI insights and compare when you need them</h2>
+            <p>
+              Ask questions about your JSON, summarize complex payloads, or compare two runs when
+              something breaks. AI stays a bonus on top of a fast, locally running JSON viewer.
+            </p>
+            <ul class="list">
+              <li>Ask natural‑language questions about your data.</li>
+              <li>Use AI compare to understand meaningful differences between payloads.</li>
+              <li>Your files stay on your Mac; AI features work on top of local data.</li>
+            </ul>
+          </div>
+
+          <figure class="media-card">
+            <img src="assets/parsee-ask-ai.png" alt="Parsee Ask AI and compare view" style="width: 100%; border-radius: 10px; display: block; margin-bottom: 8px;" />
+            <figcaption style="font-size: 12px; color: var(--muted);">
+              Ask AI about your JSON or compare two payloads when you need deeper insight.
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="section-subtle">
+        <div class="section-subtle-inner">
+          <div>
+            <h2>Bonus for macOS developers: LLDB + Xcode</h2>
+            <p>
+              Use Parsee directly from Xcode when you pause in the debugger.
+              Inspect Swift <code>Encodable</code> types or dictionaries with a single command
+              like <code>parsee myDictionary</code> and see the JSON instantly.
+            </p>
+            <ul class="list">
+              <li>Works with LLDB inside Xcode.</li>
+              <li>Great for debugging Codable models and API clients.</li>
+              <li>Keeps your inspection workflow on your Mac, with your data local.</li>
+            </ul>
+          </div>
+
+          <figure class="media-card">
+            <img src="assets/parsee-lldb-integration-xcode.png" alt="Parsee LLDB integration with Xcode" style="width: 100%; border-radius: 10px; display: block; margin-bottom: 8px;" />
+            <figcaption style="font-size: 12px; color: var(--muted);">
+              Open values from the Xcode debugger directly in Parsee.
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div>© <span id="year"></span> Parsee. All rights reserved.</div>
+      <div style="margin-top: 4px;">
+        <a href="/privacy.html">Privacy</a> ·
+        <a href="/terms.html">Terms</a>
+        <!-- Add these files later if needed -->
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
