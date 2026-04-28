@@ -317,6 +317,9 @@ code {
   text-align: center;
   color: var(--text);
 }
+.about-text + .about-text {
+  margin-top: var(--space-3);
+}
 
 /* ──────────── Footer ──────────── */
 .footer {
