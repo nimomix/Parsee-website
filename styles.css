@@ -320,6 +320,35 @@ code {
 .about-text + .about-text {
   margin-top: var(--space-3);
 }
+.about-prompt {
+  margin-top: var(--space-5);
+  font-size: clamp(16px, 1.6vw, 18px);
+  line-height: var(--lh-body);
+  text-align: center;
+  color: var(--text-muted);
+}
+.feedback-cta {
+  margin-top: var(--space-3);
+  text-align: center;
+}
+.feedback-btn {
+  display: inline-block;
+  padding: 12px 28px;
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  color: var(--accent);
+  font-size: var(--fs-body);
+  font-weight: 500;
+  transition: transform 200ms var(--ease),
+              background-color 200ms var(--ease),
+              color 200ms var(--ease);
+}
+.feedback-btn:hover {
+  transform: translateY(-1px);
+  background: var(--accent);
+  color: #fff;
+  text-decoration: none;
+}
 
 /* ──────────── Footer ──────────── */
 .footer {
